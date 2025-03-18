@@ -1,0 +1,18 @@
+Mar 18 21:28:42 +09:00 (none)  Mounting virtual file systems: /run /proc /sys OK
+Mar 18 21:28:42 +09:00 (none)  Bringing up the loopback interface... OK
+Mar 18 21:28:42 +09:00 (none)  Setting hostname to shshimad... OK
+Mar 18 21:28:42 +09:00 shshimad  Populating /dev with device nodes...  OK
+Mar 18 21:26:47 +09:00 shshimad  Activating all swap files/partitions... OK
+Mar 18 21:26:47 +09:00 shshimad  Mounting root file system in read-only mode...  OK
+Mar 18 21:26:47 +09:00 shshimad  Checking file systems... OK
+Mar 18 21:26:47 +09:00 shshimad  Remounting root file system in read-write mode... OK
+Mar 18 21:26:47 +09:00 shshimad  Mounting remaining file systems... OK
+Mar 18 21:26:47 +09:00 shshimad  Cleaning file systems: /tmp OK
+Mar 18 21:26:47 +09:00 shshimad  Retrying failed uevents, if any... OK
+Mar 18 21:26:48 +09:00 shshimad  Setting up Linux console... OK
+Mar 18 21:26:48 +09:00 shshimad  Starting system log daemon... OK
+Mar 18 21:26:48 +09:00 shshimad  Starting kernel log daemon... OK
+Mar 18 21:26:48 +09:00 shshimad  Bringing up the enp0s3 interface... 
+Mar 18 21:26:48 +09:00 shshimad  Starting dhcpcd on the enp0s3 interface... OK
+Mar 18 21:26:48 +09:00 shshimad  Starting SSH Server... OK
+--------
