@@ -1,12 +1,16 @@
 #include <linux/module.h> /* Needed by all modules */ 
 #include <linux/printk.h> /* Needed for pr_info() */ 
-  
-int init_module(void) {
+
+MODULE_LICENSE("GPL");
+
+static int __init hello_init(void) {
 	pr_info("Hello world !\n");
 	return 0; 
 }
 
-void cleanup_module(void) { 
-	pr_info("Cleaning up module.\n"); 
+static void __exit hello_exit(void) { 
+	pr_info("Cleaning up module.\n");
 }
-MODULE_LICENSE("GPL");
+
+module_init(hello_init);
+module_exit(hello_exit);
