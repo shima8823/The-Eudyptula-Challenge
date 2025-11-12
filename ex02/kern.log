@@ -453,4 +453,3 @@
 [    2.555511] ext4 filesystem being mounted at /boot supports timestamps until 2038-01-19 (0x7fffffff)
 [    2.559787] EXT4-fs (sda3): mounted filesystem 53b5c29e-4a84-443c-9b88-9eab2e834f4f r/w with ordered data mode. Quota mode: none.
 [    3.809446] e1000: enp0s3 NIC Link is Up 1000 Mbps Full Duplex, Flow Control: RX
-[  718.900403] vboxsf: Host rejected mount of 'shared' with error -2
