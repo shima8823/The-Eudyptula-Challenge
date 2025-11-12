@@ -1,0 +1,32 @@
+From 8b9398fa9b23dc832ef8e02594c0665fec15cb80 Mon Sep 17 00:00:00 2001
+From: root <root@shshimad.mynet.org>
+Date: Wed, 12 Nov 2025 17:44:10 +0900
+Subject: [PATCH] Append "-thor_kernel" to EXTRAVERSION in Makefile
+
+Append "-thor_kernel" to the top-level Makefile's EXTRAVERSION.
+
+So that the rebuilt kernel reports the expected suffix in uname -r.
+
+This change fulfills Assignment 02's requirement
+
+Signed-off-by: root <root@shshimad.mynet.org>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 50694bbbf828..1fac657df69b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,7 +2,7 @@
+ VERSION = 6
+ PATCHLEVEL = 14
+ SUBLEVEL = 0
+-EXTRAVERSION = -rc7
++EXTRAVERSION = -rc7-thor_kernel
+ NAME = Baby Opossum Posse
+ 
+ # *DOCUMENTATION*
+-- 
+2.18.0
+
