@@ -17,7 +17,6 @@ int do_work(int *my_int, int retval)
 
 		z = x * y;
 		return z;
-		return 1;
 }
 
 int my_init(void)
