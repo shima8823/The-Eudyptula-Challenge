@@ -1,11 +1,11 @@
-#include <linux/module.h> /* Needed by all modules */ 
-#include <linux/printk.h> /* Needed for pr_info() */ 
+#include <linux/module.h>
+#include <linux/printk.h>
 
 MODULE_LICENSE("GPL");
 
 static int __init hello_init(void) {
 	pr_info("Hello world !\n");
-	return 0; 
+	return 0;
 }
 
 static void __exit hello_exit(void) { 
