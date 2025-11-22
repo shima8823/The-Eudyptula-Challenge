@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="usb", RUN+="/sbin/modprobe main"
+ACTION=="remove", SUBSYSTEM=="usb", RUN+="/sbin/modprobe -r main"
