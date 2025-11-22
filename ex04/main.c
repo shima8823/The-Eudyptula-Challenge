@@ -4,6 +4,8 @@
 #include <linux/hid.h>
 #include <linux/usb/ch9.h>
 
+MODULE_LICENSE("GPL");
+
 static struct usb_device_id skel_table[] = {
 	// {  USB_INTERFACE_INFO(USB_INTERFACE_CLASS_HID,
 	//     USB_INTERFACE_SUBCLASS_BOOT,
@@ -16,13 +18,13 @@ static struct usb_device_id skel_table[] = {
 
 static int skel_probe(struct usb_interface *interface, const struct usb_device_id *id)
 {
-    printk(KERN_INFO "[skel] Skeleton Driver (%04X:%04X) plugged in\n", id->idVendor, id->idProduct);
-    return 0;
+	pr_info("Hello world !\n");
+	return 0;
 }	
 
 static void skel_disconnect(struct usb_interface *interface)
 {
-    printk(KERN_INFO "[skel] Skeleton Driver removed\n");
+	pr_info("Cleaning up module.\n");
 }
 
 static struct usb_driver skel_driver = {
@@ -33,8 +35,3 @@ static struct usb_driver skel_driver = {
 };
 
 module_usb_driver(skel_driver);
-
-MODULE_LICENSE("GPL");
-MODULE_DEVICE_TABLE(usb, skel_table);
-MODULE_AUTHOR("shshimad");
-MODULE_DESCRIPTION("A Simple Skeleton Driver");    
