@@ -10,16 +10,16 @@ MODULE_LICENSE("GPL");
 static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
 	int len = strlen(STUDENT_LOGIN);
 
-	ssize_t ret = len;  
+	ssize_t ret = len;
 
 	if (*offset >= len || copy_to_user(buf, STUDENT_LOGIN, len)) {
-			pr_info("copy_to_user failed\n");  
-			ret = 0;  
+			pr_info("copy_to_user failed\n");
+			ret = 0;
 	}
 
-	*offset += len;  
+	*offset += len;
 
-	return ret;  
+	return ret;
 }
 
 static ssize_t ft_write(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
@@ -29,7 +29,7 @@ static ssize_t ft_write(struct file *file, const char __user *buf, size_t count,
 	if (copy_from_user(kbuf, buf, count))
 		return -EFAULT;
 
-	if (strncmp(kbuf, STUDENT_LOGIN, count) != 0)		
+	if (strncmp(kbuf, STUDENT_LOGIN, count) != 0)
 		return -EINVAL;
 
 	return count;
