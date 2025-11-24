@@ -11,21 +11,14 @@ MODULE_LICENSE("GPL");
 static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
 	size_t len = strlen(STUDENT_LOGIN);
 
-	// すでに全部読み終わっていれば EOF or ユーザが0バイト読みたい場合は何もしない
+	// すでに全部読み終わっていればEOF or ユーザが0バイト読みたい場合は何もしない
 	if (*offset >= len || count == 0)
 		return 0;
-
-	// 残りの文字数を超えてコピーしないように調整
 	if (count > len - *offset)
 		count = len - *offset;
-
-	// 今回は失敗した時点でERROR
 	if (copy_to_user(buf, STUDENT_LOGIN + *offset, count))
 		return -EFAULT;
-
-	// 読み進めた分だけオフセットを進める
 	*offset += count;
-
 	return count;
 }
 
