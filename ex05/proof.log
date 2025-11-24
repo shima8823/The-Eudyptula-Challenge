@@ -1,0 +1,48 @@
+-bash-4.4# pwd
+/mnt/shared/ex05
+-bash-4.4# ls
+main.c  Makefile  proof.log
+-bash-4.4# make
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex05  modules 
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex05'
+make[4]: Warning: File 'main.c' has modification time 710 s in the future
+  CC [M]  main.o
+make[4]: warning:  Clock skew detected.  Your build may be incomplete.
+make[4]: Warning: File 'modules.order' has modification time 909 s in the future
+  MODPOST Module.symvers
+make[4]: warning:  Clock skew detected.  Your build may be incomplete.
+make[4]: Warning: File 'main.o' has modification time 909 s in the future
+  CC [M]  main.mod.o
+  CC [M]  .module-common.o
+  LD [M]  main.ko
+make[4]: warning:  Clock skew detected.  Your build may be incomplete.
+make[2]: Leaving directory '/mnt/shared/ex05'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+-bash-4.4# lsmod 
+Module                  Size  Used by
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+-bash-4.4# ls /dev/fortytwo
+ls: cannot access '/dev/fortytwo': No such file or directory
+-bash-4.4# insmod main.ko
+-bash-4.4# lsmod
+Module                  Size  Used by
+main                   12288  0
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+ls -l /dev/fortytwo
+crw------- 1 root root 10, 123 Nov 24 17:45 /dev/fortytwo
+ cat /dev/fortytwo 
+shshimad-bash-4.4# echo aaa > /dev/fortytwo 
+-bash: echo: write error: Invalid argument
+-bash-4.4# echo shshimad > /dev/fortytwo 
+-bash: echo: write error: Invalid argument
+-bash-4.4# echo -n shshimad > /dev/fortytwo
+-bash-4.4# rmmod main 
+-bash-4.4# lsmod
+Module                  Size  Used by
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+-bash-4.4# ls /dev/fortytwo
+ls: cannot access '/dev/fortytwo': No such file or directory
