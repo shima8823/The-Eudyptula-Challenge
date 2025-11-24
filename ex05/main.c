@@ -30,13 +30,14 @@ static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t
 }
 
 static ssize_t ft_write(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
-
 	char kbuf[256];
 
+	if (count > sizeof(kbuf))
+		return -EINVAL;
 	if (copy_from_user(kbuf, buf, count))
 		return -EFAULT;
-
-	if (strncmp(kbuf, STUDENT_LOGIN, count) != 0)
+	if (count != strlen(STUDENT_LOGIN) ||
+		strncmp(kbuf, STUDENT_LOGIN, count) != 0)
 		return -EINVAL;
 
 	return count;
