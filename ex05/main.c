@@ -9,18 +9,24 @@ MODULE_LICENSE("GPL");
 #define STUDENT_LOGIN "shshimad"
 
 static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
-	int len = strlen(STUDENT_LOGIN);
+	size_t len = strlen(STUDENT_LOGIN);
 
-	ssize_t ret = len;
+	// すでに全部読み終わっていれば EOF or ユーザが0バイト読みたい場合は何もしない
+	if (*offset >= len || count == 0)
+		return 0;
 
-	if (*offset >= len || copy_to_user(buf, STUDENT_LOGIN, len)) {
-			pr_info("copy_to_user failed\n");
-			ret = 0;
-	}
+	// 残りの文字数を超えてコピーしないように調整
+	if (count > len - *offset)
+		count = len - *offset;
 
-	*offset += len;
+	// 今回は失敗した時点でERROR
+	if (copy_to_user(buf, STUDENT_LOGIN + *offset, count))
+		return -EFAULT;
 
-	return ret;
+	// 読み進めた分だけオフセットを進める
+	*offset += count;
+
+	return count;
 }
 
 static ssize_t ft_write(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
