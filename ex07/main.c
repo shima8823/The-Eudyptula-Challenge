@@ -53,10 +53,7 @@ static int __init debugfs_init(void) {
 
 	// assinment 5
 	debugfs_create_file("id", 0666, dir, NULL, &ft_fops);
-
-	// 
-	debugfs_create_file("jiffies", 0444, dir, NULL, &add_fops);
-
+	debugfs_create_ulong("jiffies", 0444, dir, (unsigned long *)&jiffies);
 	// 
 	debugfs_create_file("foo", 0644, dir, NULL, &add_fops);
 
