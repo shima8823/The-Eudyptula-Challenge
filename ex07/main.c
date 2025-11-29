@@ -4,6 +4,9 @@
 
 MODULE_LICENSE("GPL");
 
+#define SUBDIR_NAME "fortytwo"
+#define STUDENT_LOGIN "shshimad"
+
 static struct dentry *dir = NULL;
 
 static int add_write_op(void *data, u64 value)
@@ -12,14 +15,48 @@ static int add_write_op(void *data, u64 value)
 }
 DEFINE_SIMPLE_ATTRIBUTE(add_fops, NULL, add_write_op, "%llu\n");
 
+static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
+	size_t len = strlen(STUDENT_LOGIN);
+
+	// すでに全部読み終わっていればEOF or ユーザが0バイト読みたい場合は何もしない
+	if (*offset >= len || count == 0)
+		return 0;
+	if (count > len - *offset)
+		count = len - *offset;
+	if (copy_to_user(buf, STUDENT_LOGIN + *offset, count))
+		return -EFAULT;
+	*offset += count;
+	return count;
+}
+
+static ssize_t ft_write(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
+	char kbuf[256];
+
+	if (count > sizeof(kbuf))
+		return -EINVAL;
+	if (copy_from_user(kbuf, buf, count))
+		return -EFAULT;
+	if (count != strlen(STUDENT_LOGIN) ||
+		strncmp(kbuf, STUDENT_LOGIN, count) != 0)
+		return -EINVAL;
+
+	return count;
+}
+static const struct file_operations ft_fops = {
+	.owner = THIS_MODULE,
+	.read = ft_read,
+	.write = ft_write,
+};
 
 static int __init debugfs_init(void) {
-	dir = debugfs_create_dir("fortytwo", NULL);
+	dir = debugfs_create_dir(SUBDIR_NAME, NULL);
 
 	// assinment 5
-	debugfs_create_file("id", 0666, dir, NULL, &add_fops);
+	debugfs_create_file("id", 0666, dir, NULL, &ft_fops);
+
 	// 
 	debugfs_create_file("jiffies", 0444, dir, NULL, &add_fops);
+
 	// 
 	debugfs_create_file("foo", 0644, dir, NULL, &add_fops);
 
