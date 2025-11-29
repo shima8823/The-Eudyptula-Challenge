@@ -15,7 +15,7 @@ static int add_write_op(void *data, u64 value)
 }
 DEFINE_SIMPLE_ATTRIBUTE(add_fops, NULL, add_write_op, "%llu\n");
 
-static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
+static ssize_t id_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
 	size_t len = strlen(STUDENT_LOGIN);
 
 	// すでに全部読み終わっていればEOF or ユーザが0バイト読みたい場合は何もしない
@@ -29,7 +29,7 @@ static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t
 	return count;
 }
 
-static ssize_t ft_write(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
+static ssize_t id_write(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
 	char kbuf[256];
 
 	if (count > sizeof(kbuf))
@@ -42,17 +42,17 @@ static ssize_t ft_write(struct file *file, const char __user *buf, size_t count,
 
 	return count;
 }
-static const struct file_operations ft_fops = {
+static const struct file_operations id_fops = {
 	.owner = THIS_MODULE,
-	.read = ft_read,
-	.write = ft_write,
+	.read = id_read,
+	.write = id_write,
 };
 
 static int __init debugfs_init(void) {
 	dir = debugfs_create_dir(SUBDIR_NAME, NULL);
 
 	// assinment 5
-	debugfs_create_file("id", 0666, dir, NULL, &ft_fops);
+	debugfs_create_file("id", 0666, dir, NULL, &id_fops);
 	debugfs_create_ulong("jiffies", 0444, dir, (unsigned long *)&jiffies);
 	// 
 	debugfs_create_file("foo", 0644, dir, NULL, &add_fops);
