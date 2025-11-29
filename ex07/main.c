@@ -57,7 +57,6 @@ static int __init debugfs_init(void) {
 	// 
 	debugfs_create_file("foo", 0644, dir, NULL, &add_fops);
 
-	// debugfs_create_u32("sum", 0444, dir, &sum);
 	return 0;
 }
 
