@@ -17,7 +17,6 @@ static size_t foo_len;
 static ssize_t id_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
 	size_t len = strlen(STUDENT_LOGIN);
 
-	// すでに全部読み終わっていればEOF or ユーザが0バイト読みたい場合は何もしない
 	if (*offset >= len || count == 0)
 		return 0;
 	if (count > len - *offset)
@@ -95,7 +94,6 @@ static const struct file_operations foo_fops = {
 static int __init debugfs_init(void) {
 	dir = debugfs_create_dir(SUBDIR_NAME, NULL);
 
-	// assinment 5
 	debugfs_create_file("id", 0666, dir, NULL, &id_fops);
 	debugfs_create_ulong("jiffies", 0444, dir, (unsigned long *)&jiffies);
 	debugfs_create_file("foo", 0644, dir, NULL, &foo_fops);
