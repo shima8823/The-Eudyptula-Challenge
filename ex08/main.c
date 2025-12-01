@@ -46,12 +46,12 @@ ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
 		size_t len = strlen(str);
 
 		if (len == 0)
-			return 0;
+				return 0;
 		tmp = kmalloc(sizeof(char) * PAGE_SIZE * 2, GFP_KERNEL);
 		if (!tmp)
-			return -ENOMEM;
+				return -ENOMEM;
 		for (i = 0, j = len - 1; j != 0; i++, j--)
-			tmp[i] = str[j];
+				tmp[i] = str[j];
 		tmp[i++] = str[j];
 		tmp[i] = 0x0;
 		res = simple_read_from_buffer(user, size, offs, tmp, i);
@@ -66,7 +66,7 @@ ssize_t myfd_write(struct file *fp, const char __user *user, size_t size,
 
 		res = simple_write_to_buffer(str, sizeof(str) - 1, offs, user, size);
 		if (res < 0)
-			return res;
+				return res;
 		str[res] = 0x0;
 		return res;
 }
