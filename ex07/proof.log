@@ -1,0 +1,268 @@
+-bash-4.4# ls
+main.c  Makefile  notes  proof.log  test-foo.c
+-bash-4.4# make
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex07  modules 
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex07'
+  CC [M]  main.o
+  MODPOST Module.symvers
+  CC [M]  main.mod.o
+  CC [M]  .module-common.o
+  LD [M]  main.ko
+make[2]: Leaving directory '/mnt/shared/ex07'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+-bash-4.4# lsmod
+Module                  Size  Used by
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+-bash-4.4# ls -l /sys/kernel/debug/fortytwo
+ls: cannot access '/sys/kernel/debug/fortytwo': No such file or directory
+-bash-4.4# insmod main.ko 
+-bash-4.4# lsmod
+Module                  Size  Used by
+main                   16384  0
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+-bash-4.4# ls -l /sys/kernel/debug/fortytwo
+total 0
+-rw-r--r-- 1 root root 0 Dec  1 15:42 foo
+-rw-rw-rw- 1 root root 0 Dec  1 15:42 id
+-r--r--r-- 1 root root 0 Dec  1 15:42 jiffies
+-bash-4.4# whoami
+root
+
+# id test
+-bash-4.4# cat /sys/kernel/debug/fortytwo/id 
+shshimad-bash-4.4# echo -n 42 > /sys/kernel/debug/fortytwo/id 
+-bash: echo: write error: Invalid argument
+-bash-4.4# echo -n "shshimad" > /sys/kernel/debug/fortytwo/id 
+
+    # su shshimad
+-bash-4.4# su shshimad
+bash-4.4$ whoami
+shshimad
+bash-4.4$ ls /sys/kernel/debug/
+ls: cannot open directory '/sys/kernel/debug/': Permission denied
+bash-4.4# su root
+Password: 
+bash-4.4# whoami
+root
+bash-4.4# chown shshimad /sys/kernel/debug/
+bash-4.4# chown shshimad /sys/kernel/debug/fortytwo/
+bash-4.4# exit
+bash-4.4$ ls /sys/kernel/debug/
+acpi             device_component  extfrag             ieee80211              slab           tracing
+bdi              devices_deferred  fault_around_bytes  kprobes                sleep_time     usb
+block            dma_buf           fortytwo            mce                    stackdepot     virtio-ports
+check_wx_pages   dmaengine         hid                 multigrain_timestamps  suspend_stats  wakeup_sources
+clear_warn_once  dri               i2c                 regmap                 swiotlb        x86
+bash-4.4$ ls /sys/kernel/debug/fortytwo/
+foo  id  jiffies
+bash-4.4$ cat /sys/kernel/debug/fortytwo/id
+shshimadbash-4.4$ echo -n 42 > /sys/kernel/debug/fortytwo/id
+bash: echo: write error: Invalid argument
+bash-4.4$ echo -n shshimad > /sys/kernel/debug/fortytwo/id
+bash-4.4$ exit
+
+# jiffies test
+-bash-4.4# cat /sys/kernel/debug/fortytwo/jiffies 
+4296960680
+-bash-4.4# cat /sys/kernel/debug/fortytwo/jiffies 
+4296963314
+-bash-4.4# echo 42 > /sys/kernel/debug/fortytwo/jiffies 
+-bash: echo: write error: Permission denied
+    # su shshimad
+-bash-4.4# su shshimad
+bash-4.4$ cat /sys/kernel/debug/fortytwo/jiffies 
+4296985216
+bash-4.4$ cat /sys/kernel/debug/fortytwo/jiffies 
+4296987645
+bash-4.4$ echo 42 > /sys/kernel/debug/fortytwo/jiffies 
+bash: /sys/kernel/debug/fortytwo/jiffies: Permission denied
+bash-4.4$ exit
+
+# foo test
+-bash-4.4# cat /sys/kernel/debug/fortytwo/foo 
+-bash-4.4# echo 123 > /sys/kernel/debug/fortytwo/foo 
+-bash-4.4# cat /sys/kernel/debug/fortytwo/foo 
+123
+    # PAGE_SIZE test
+-bash-4.4# python3 -c "print('a' * 4095)" > /sys/kernel/debug/fortytwo/foo
+-bash-4.4# cat /sys/kernel/debug/fortytwo/foo 
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+-bash-4.4# python3 -c "print('a' * 4096)" > /sys/kernel/debug/fortytwo/foo 
+Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='ISO-8859-1'>
+OSError: [Errno 22] Invalid argument
+-bash-4.4# echo 123 > /sys/kernel/debug/fortytwo/foo
+    # su shshimad
+-bash-4.4# su shshimad
+bash-4.4$ cat /sys/kernel/debug/fortytwo/foo 
+123
+bash-4.4$ echo 42 > /sys/kernel/debug/fortytwo/foo 
+bash: /sys/kernel/debug/fortytwo/foo: Permission denied
+bash-4.4$ exit
+    # handle concurrent read/write test
+-bash-4.4# while true; do /bin/echo -en 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n' > /sys/kernel/debug/fortytwo/foo; done
+        # other terminal
+-bash-4.4# while true; do /bin/echo -en 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n\n' > /sys/kernel/debug/fortytwo/foo; done
+        # other terminal
+-bash-4.4# while true; do cat /sys/kernel/debug/fortytwo/foo; done
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+^C
+        # no mutex
+-bash-4.4# rmmod main
+-bash-4.4# vim Makefile 
+-bash-4.4# git diff Makefile 
+diff --git a/ex07/Makefile b/ex07/Makefile
+index 7e9c690..4b66b30 100644
+--- a/ex07/Makefile
++++ b/ex07/Makefile
+@@ -1,4 +1,4 @@
+-obj-m += main.o 
++obj-m += test-foo.o 
+  
+ PWD := $(CURDIR) 
+  
+-bash-4.4# diff main.c test-foo.c
+3a4
+> #include <linux/delay.h>
+50c51
+<       mutex_lock(&foo_mutex);
+---
+>       // mutex_lock(&foo_mutex);
+55c56
+<               mutex_unlock(&foo_mutex);
+---
+>               // mutex_unlock(&foo_mutex);
+62c63
+<               mutex_unlock(&foo_mutex);
+---
+>               // mutex_unlock(&foo_mutex);
+67c68
+<       mutex_unlock(&foo_mutex);
+---
+>       // mutex_unlock(&foo_mutex);
+72c73
+<       mutex_lock(&foo_mutex);
+---
+>       // mutex_lock(&foo_mutex);
+75c76
+<               mutex_unlock(&foo_mutex);
+---
+>               // mutex_unlock(&foo_mutex);
+77a79,80
+> 
+>       size_t half = count / 2;
+79c82
+<               mutex_unlock(&foo_mutex);
+---
+>               // mutex_unlock(&foo_mutex);
+81a85,91
+>       msleep(100);
+> 
+>       if (copy_from_user(foo_data + half, buf + half, count - half)) {
+>               // mutex_unlock(&foo_mutex);
+>               return -EFAULT;
+>       }
+> 
+84c94
+<       mutex_unlock(&foo_mutex);
+---
+>       // mutex_unlock(&foo_mutex);
+-bash-4.4# make
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex07  modules 
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex07'
+  CC [M]  test-foo.o
+  MODPOST Module.symvers
+  CC [M]  test-foo.mod.o
+  LD [M]  test-foo.ko
+make[2]: Leaving directory '/mnt/shared/ex07'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+-bash-4.4# insmod test-foo.ko 
+-bash-4.4# lsmod
+Module                  Size  Used by
+test_foo               16384  0
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+-bash-4.4# while true; do /bin/echo -en 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\n' > /sys/kernel/debug/fortytwo/foo; done
+        # other terminal
+-bash-4.4# while true; do /bin/echo -en 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n\n' > /sys/kernel/debug/fortytwo/foo; done
+        # other terminal
+-bash-4.4# while true; do cat /sys/kernel/debug/fortytwo/foo; done
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+AAAAAAAAAAAAAAAAABBBBBBBBBBBBBBB
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
+BBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAA
+
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+^C
+    # main rebuild
+-bash-4.4# rmmod test-foo
+-bash-4.4# lsmod
+Module                  Size  Used by
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+-bash-4.4# make clean
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex07  clean
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex07'
+  CLEAN   Module.symvers
+make[2]: Leaving directory '/mnt/shared/ex07'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+-bash-4.4# git checkout Makefile 
+-bash-4.4# git diff Makefile
+-bash-4.4# make
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex07  modules 
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex07'
+  MODPOST Module.symvers
+make[2]: Leaving directory '/mnt/shared/ex07'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+-bash-4.4# insmod main.ko 
+-bash-4.4# ls /sys/kernel/debug/fortytwo/
+foo  id  jiffies
+
+# cleanup
+-bash-4.4# make clean
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex07  clean
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex07'
+make[2]: Leaving directory '/mnt/shared/ex07'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+-bash-4.4# ls   
+main.c  Makefile  notes  proof.log  test-foo.c
+-bash-4.4# rmmod main
+-bash-4.4# lsmod
+Module                  Size  Used by
+vboxsf                 45056  1
+vboxguest              49152  1 vboxsf
+-bash-4.4# ls -l /sys/kernel/debug/fortytwo
+ls: cannot access '/sys/kernel/debug/fortytwo': No such file or directory
