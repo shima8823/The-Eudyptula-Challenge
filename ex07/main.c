@@ -93,6 +93,10 @@ static const struct file_operations foo_fops = {
 
 static int __init debugfs_init(void) {
 	dir = debugfs_create_dir(SUBDIR_NAME, NULL);
+	if (!dir) {
+		pr_err("Failed to create \"%s\" dir.\n", SUBDIR_NAME);
+		return -ENODEV;
+	}
 
 	debugfs_create_file("id", 0666, dir, NULL, &id_fops);
 	debugfs_create_ulong("jiffies", 0444, dir, (unsigned long *)&jiffies);
