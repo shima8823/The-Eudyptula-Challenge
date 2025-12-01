@@ -14,7 +14,7 @@ static ssize_t myfd_read(struct file *fp, char __user *user,
 static ssize_t myfd_write(struct file *fp, const char __user *user,
 			  size_t size, loff_t *offs);
 
-static struct file_operations myfd_fops = {
+static const struct file_operations myfd_fops = {
 	.owner = THIS_MODULE,
 	.read = &myfd_read,
 	.write = &myfd_write
