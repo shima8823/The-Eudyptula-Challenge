@@ -5,7 +5,7 @@
 #include <linux/fs.h>
 #include <linux/slab.h>
 
-MODULE_LICENSE("LICENSE");
+MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Louis Solofrizzo <louis@ne02ptzero.me>");
 MODULE_DESCRIPTION("Useless module");
 
@@ -36,12 +36,13 @@ static void __exit myfd_cleanup(void)
 		misc_deregister(&myfd_device);
 }
 
-char str[PAGE_SIZE];
+static char str[PAGE_SIZE];
 
-ssize_t myfd_read(struct file *fp, char __user *user, size_t size,
-				  loff_t *offs)
+static ssize_t myfd_read(struct file *fp, char __user *user, size_t size,
+						 loff_t *offs)
 {
-		size_t i, j;
+		size_t i;
+		size_t j;
 		char *tmp;
 		ssize_t res;
 		size_t len = strlen(str);
@@ -60,8 +61,8 @@ ssize_t myfd_read(struct file *fp, char __user *user, size_t size,
 		return res;
 }
 
-ssize_t myfd_write(struct file *fp, const char __user *user, size_t size,
-				   loff_t *offs)
+static ssize_t myfd_write(struct file *fp, const char __user *user, size_t size,
+						  loff_t *offs)
 {
 		ssize_t res;
 
