@@ -69,6 +69,8 @@ static ssize_t myfd_write(struct file *fp, const char __user *user, size_t size,
 	res = simple_write_to_buffer(str, sizeof(str) - 1, offs, user, size);
 	if (res < 0)
 		return res;
+	if (res == 0 && *offs >= sizeof(str) - 1)
+		return -ENOSPC;
 	str[*offs] = 0x0;
 	return res;
 }
