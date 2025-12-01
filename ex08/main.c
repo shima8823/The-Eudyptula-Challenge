@@ -38,7 +38,8 @@ static void __exit myfd_cleanup(void)
 
 char str[PAGE_SIZE];
 
-ssize_t myfd_read(struct file *fp, char __user *user, size_t size, loff_t *offs)
+ssize_t myfd_read(struct file *fp, char __user *user, size_t size,
+				  loff_t *offs)
 {
 		size_t i, j;
 		char *tmp;
