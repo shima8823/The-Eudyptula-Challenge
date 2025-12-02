@@ -20,7 +20,7 @@ static int skel_probe(struct usb_interface *interface, const struct usb_device_i
 {
 	pr_info("Hello world !\n");
 	return 0;
-}	
+}
 
 static void skel_disconnect(struct usb_interface *interface)
 {

@@ -8,10 +8,11 @@ MODULE_LICENSE("GPL");
 #define DEVICE_NAME "fortytwo"
 #define STUDENT_LOGIN "shshimad"
 
-static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t *offset) {
+static ssize_t ft_read(struct file *file, char __user *buf, size_t count,
+		       loff_t *offset)
+{
 	size_t len = strlen(STUDENT_LOGIN);
 
-	// すでに全部読み終わっていればEOF or ユーザが0バイト読みたい場合は何もしない
 	if (*offset >= len || count == 0)
 		return 0;
 	if (count > len - *offset)
@@ -22,7 +23,9 @@ static ssize_t ft_read(struct file *file, char __user *buf, size_t count, loff_t
 	return count;
 }
 
-static ssize_t ft_write(struct file *file, const char __user *buf, size_t count, loff_t *offset) {
+static ssize_t ft_write(struct file *file, const char __user *buf, size_t count,
+			loff_t *offset)
+{
 	char kbuf[256];
 
 	if (count > sizeof(kbuf))
@@ -30,7 +33,7 @@ static ssize_t ft_write(struct file *file, const char __user *buf, size_t count,
 	if (copy_from_user(kbuf, buf, count))
 		return -EFAULT;
 	if (count != strlen(STUDENT_LOGIN) ||
-		strncmp(kbuf, STUDENT_LOGIN, count) != 0)
+	    strncmp(kbuf, STUDENT_LOGIN, count) != 0)
 		return -EINVAL;
 
 	return count;
@@ -48,11 +51,13 @@ static struct miscdevice ft_misc_device = {
 	.fops = &ft_fops,
 };
 
-static int __init device_init(void) {
+static int __init device_init(void)
+{
 	return misc_register(&ft_misc_device);
 }
 
-static void __exit device_exit(void) { 
+static void __exit device_exit(void)
+{
 	misc_deregister(&ft_misc_device);
 }
 
