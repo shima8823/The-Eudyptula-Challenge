@@ -14,10 +14,10 @@ static int __init misc_init(void)
 	struct mount *mnt;
 	struct mnt_namespace *ns = current->nsproxy->mnt_ns;
 
-	mnt = rb_entry(ns->mnt_first_node, struct mount, mnt_node);
-	pr_info("my_mount: %s\n", mnt->mnt_devname);
-	
-	// mount リストを走査
+	for (struct rb_node *node = ns->mnt_first_node; node; node = rb_next(node)) {
+		mnt = rb_entry(node, struct mount, mnt_node);
+		pr_info("my_mount: %s\n", mnt->mnt_devname);
+	}
 	
 	return 0;
 }
