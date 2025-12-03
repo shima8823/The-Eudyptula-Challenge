@@ -24,7 +24,7 @@ static ssize_t procfile_read(struct file *file, char __user *user,
 	struct path root;
 	ssize_t res;
 	int len = 0;
-	
+
 	output = kmalloc(PAGE_SIZE, GFP_KERNEL);
 	if (!output)
 		return -ENOMEM;
@@ -46,9 +46,11 @@ static ssize_t procfile_read(struct file *file, char __user *user,
 		if (!path_is_under(&mnt_path, &root))
 			continue;
 		char *mount_point = dentry_path_raw(mnt->mnt_mountpoint, buf, PATH_MAX);
+
 		if (IS_ERR(mount_point))
 			continue;
 		const char *name = mnt->mnt_mountpoint->d_name.name;
+
 		if (strcmp(name, "/") == 0)
 			name = "root";
 		if (len >= PAGE_SIZE)
@@ -74,7 +76,7 @@ static int __init proc_mount_init(void)
 {
 	proc_dir = proc_create(SUBDIR_NAME, 0444, NULL, &proc_file_fops);
 
-	if (NULL == proc_dir)
+	if (!proc_dir)
 		return -ENOMEM;
 	return 0;
 }
