@@ -10,7 +10,7 @@
 #   3. echo %k > .../skel_driver/bind             - skel_driverにバインド
 #   (%k = デバイス名、例: 2-2:1.0)
 
-ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{bInterfaceSubClass}=="01", ATTR{bInterfaceProtocol}=="01", RUN+="/bin/sh -c 'modprobe main; echo %k > /sys/bus/usb/drivers/usbhid/unbind 2>/dev/null; echo %k > /sys/bus/usb/drivers/skel_driver/bind 2>/dev/null'"
+ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="03", ATTR{bInterfaceSubClass}=="01", ATTR{bInterfaceProtocol}=="01", RUN+="/bin/sh -c 'modprobe main && echo %k > /sys/bus/usb/drivers/usbhid/unbind 2>/dev/null; echo %k > /sys/bus/usb/drivers/skel_driver/bind 2>/dev/null'"
 
 # ENV{INTERFACE}=="3/1/1" = HIDクラス(3)/Bootサブクラス(1)/キーボード(1)
 ACTION=="remove", SUBSYSTEM=="usb", ENV{INTERFACE}=="3/1/1", RUN+="/sbin/modprobe -r main"
