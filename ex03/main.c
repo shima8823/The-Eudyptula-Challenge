@@ -3,7 +3,9 @@
 #include <linux/delay.h>
 #include <linux/slab.h>
 
-int do_work(int *my_int, int retval)
+MODULE_LICENSE("GPL");
+
+int do_work(int *my_int)
 {
 	int x;
 	int y = *my_int;
@@ -23,7 +25,7 @@ int my_init(void)
 {
 	int x = 10;
 
-	x = do_work(&x, x);
+	x = do_work(&x);
 	return x;
 }
 
