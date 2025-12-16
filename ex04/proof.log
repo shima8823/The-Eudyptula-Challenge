@@ -1,0 +1,58 @@
+-bash-4.4# ls
+99-usb-keyboard.rules  main.c  Makefile  notes
+-bash-4.4# make
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex04 modules
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex04'
+  CC [M]  main.o
+make[4]: Warning: File 'modules.order' has modification time 1.5 s in the future
+  MODPOST Module.symvers
+make[4]: warning:  Clock skew detected.  Your build may be incomplete.
+make[4]: Warning: File 'main.o' has modification time 1.2 s in the future
+  CC [M]  main.mod.o
+  CC [M]  .module-common.o
+  LD [M]  main.ko
+make[4]: warning:  Clock skew detected.  Your build may be incomplete.
+make[2]: Leaving directory '/mnt/shared/ex04'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+-bash-4.4# make install_modules
+make -C /lib/modules/6.14.0-rc7-thor_kernel+/build M=/mnt/shared/ex04 modules_install        
+make[1]: Entering directory '/usr/src/kernel-6.14-rc7'
+make[2]: Entering directory '/mnt/shared/ex04'
+  INSTALL /lib/modules/6.14.0-rc7-thor_kernel+/updates/main.ko
+  DEPMOD  /lib/modules/6.14.0-rc7-thor_kernel+
+make[2]: Leaving directory '/mnt/shared/ex04'
+make[1]: Leaving directory '/usr/src/kernel-6.14-rc7'
+depmod -a
+-bash-4.4# make install_rules
+cp 99-usb-keyboard.rules /etc/udev/rules.d/
+udevadm control --reload-rules
+
+-bash-4.4# dmesg | tail -27
+[ 4468.206616] usb 2-2: new low-speed USB device number 16 using ohci-pci
+[ 4469.150601] usb 2-2: New USB device found, idVendor=0566, idProduct=3107, bcdDevice= 1.00 
+[ 4469.150607] usb 2-2: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[ 4469.176138] input: HID 0566:3107 as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.0/0003:0566:3107.001F/input/input50
+[ 4469.362321] hid-generic 0003:0566:3107.001F: input,hidraw1: USB HID v1.10 Keyboard [HID 0566:3107] on usb-0000:00:06.0-2/input0
+[ 4469.396177] input: HID 0566:3107 Consumer Control as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.1/0003:0566:3107.0020/input/input51
+[ 4469.448265] input: HID 0566:3107 System Control as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.1/0003:0566:3107.0020/input/input52
+[ 4469.448442] hid-generic 0003:0566:3107.0020: input,hidraw2: USB HID v1.10 Device [HID 0566:3107] on usb-0000:00:06.0-2/input1
+[ 4469.457111] usbcore: registered new interface driver skel_driver
+[ 4469.779210] Hello world !
+[ 4659.135422] kworker/2:1 (3892) used greatest stack depth: 11736 bytes left
+[ 4875.783530] usb 2-2: USB disconnect, device number 16
+[ 4875.783732] Cleaning up module.
+[ 4875.790609] usbcore: deregistering interface driver skel_driver
+[ 4900.011350] usb 2-2: new low-speed USB device number 17 using ohci-pci
+[ 4900.566102] usb 2-2: New USB device found, idVendor=0566, idProduct=3107, bcdDevice= 1.00 
+[ 4900.566113] usb 2-2: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[ 4900.588369] input: HID 0566:3107 as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.0/0003:0566:3107.0021/input/input53
+[ 4900.790427] hid-generic 0003:0566:3107.0021: input,hidraw1: USB HID v1.10 Keyboard [HID 0566:3107] on usb-0000:00:06.0-2/input0
+[ 4900.821555] input: HID 0566:3107 Consumer Control as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.1/0003:0566:3107.0022/input/input54
+[ 4900.875548] input: HID 0566:3107 System Control as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.1/0003:0566:3107.0022/input/input55
+[ 4900.875761] hid-generic 0003:0566:3107.0022: input,hidraw2: USB HID v1.10 Device [HID 0566:3107] on usb-0000:00:06.0-2/input1
+[ 4900.888966] usbcore: registered new interface driver skel_driver
+[ 4900.991177] Hello world !
+[ 4908.086254] usb 2-2: USB disconnect, device number 17
+[ 4908.086316] Cleaning up module.
+[ 4908.090490] usbcore: deregistering interface driver skel_driver
