@@ -5,7 +5,7 @@
 
 MODULE_LICENSE("GPL");
 
-int do_work(int *my_int)
+int do_work(int *my_int, int retval)
 {
 	int x;
 	int y = *my_int;
@@ -25,7 +25,7 @@ int my_init(void)
 {
 	int x = 10;
 
-	x = do_work(&x);
+	x = do_work(&x, x);
 	return x;
 }
 
