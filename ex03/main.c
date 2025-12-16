@@ -3,13 +3,15 @@
 #include <linux/delay.h>
 #include <linux/slab.h>
 
+MODULE_LICENSE("GPL");
+
 int do_work(int *my_int, int retval)
 {
 	int x;
 	int y = *my_int;
 	int z;
 
-	for (x = 0; x < my_int; ++x)
+	for (x = 0; x < *my_int; ++x)
 		udelay(10);
 
 	if (y < 10)

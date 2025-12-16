@@ -3,12 +3,14 @@
 
 MODULE_LICENSE("GPL");
 
-static int __init hello_init(void) {
+static int __init hello_init(void)
+{
 	pr_info("Hello world !\n");
 	return 0;
 }
 
-static void __exit hello_exit(void) { 
+static void __exit hello_exit(void)
+{
 	pr_info("Cleaning up module.\n");
 }
 
